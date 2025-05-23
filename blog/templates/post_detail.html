@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block title %}{{ post.title }} - وبلاگ من{% endblock %}
+
+{% block content %}
+<div class="card shadow-sm">
+    <div class="card-body">
+        <h2 class="card-title mb-3">{{ post.title }}</h2>
+        <p class="text-muted small mb-4">تاریخ انتشار: {{ post.published_date|date:"Y/m/d" }}</p>
+        <div class="card-text" style="line-height: 1.8; font-size: 1.1rem;">
+            {{ post.content|linebreaks }}
+        </div>
+    </div>
+</div>
+
+<a href="{% url 'posts' %}" class="btn btn-primary mt-4">بازگشت به مطالب</a>
+{% endblock %}

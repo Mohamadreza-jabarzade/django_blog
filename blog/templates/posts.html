@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+
+{% block title %}مطالب - وبلاگ من{% endblock %}
+
+{% block content %}
+<h3 class="topPostsTitle" >پست‌های وبلاگ</h3>
+
+{% for post in posts %}
+    <div class="card mb-3">
+        <div class="card-body">
+            <h5 class="card-title"><a href="{% url   'post_detail' post.pk %}">{{ post.title }}</a></h5>
+            <p class="card-text">{{ post.content }}</p>
+        </div>
+    </div>
+{% empty %}
+    <div class="alert alert-warning">
+        هیچ پستی هنوز منتشر نشده است.
+    </div>
+{% endfor %}
+{% endblock %}
