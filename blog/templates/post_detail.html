@@ -14,6 +14,21 @@
 <div class="card shadow-sm">
     <div class="card-body">
         <h2 class="card-title mb-3">{{ post.title }}</h2>
+        {% if user.is_authenticated %}
+            <form action="{% url 'like_post' post.pk %}" method="post">
+                {% csrf_token %}
+                {% if user in post.likes.all %}
+                    <button type="submit" class="btn btn-danger btn-sm">❤️ لغو لایک</button>
+                {% else %}
+                    <button type="submit" class="btn btn-outline-danger btn-sm">🤍 لایک</button>
+                {% endif %}
+                <span class="ms-2 text-muted small">تعداد لایک‌ها: {{ post.total_likes }}</span>
+            </form>
+        {% else %}
+            <button type="button" onclick="loginMessage()" class="btn btn-outline-danger btn-sm">🤍 لایک</button>
+            <span class="ms-2 text-muted small">تعداد لایک‌ها: {{ post.total_likes }}</span>
+        {% endif %}
+
         <p class="text-muted small">تاریخ انتشار: {{ post.created_at|to_shamsi }}</p>
         <div class="card-text" style="line-height: 1.8; font-size: 1.1rem;">
             {{ post.content|linebreaks }}
@@ -45,4 +60,11 @@
 {% else %}
     <p class="text-danger mt-4">برای ثبت نظر باید <a href="{% url 'login' %}">وارد شوید</a>.</p>
 {% endif %}
+{% endblock %}
+{% block customScripts %}
+<script>
+    function loginMessage(){
+        alert("ابتدا باید وارد شوید")
+    }
+</script>
 {% endblock %}

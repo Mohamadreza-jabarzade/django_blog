@@ -1,3 +1,4 @@
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import UserCreationForm
 from django.shortcuts import render, get_object_or_404
 from django.shortcuts import render, redirect
@@ -59,3 +60,14 @@ def signup_view(request):
         form = UserCreationForm()
 
     return render(request, 'signup.html', {'form': form})
+
+@login_required
+def like_post(request, pk):
+    post = get_object_or_404(Post, pk=pk)
+
+    if request.user in post.likes.all():
+        post.likes.remove(request.user)
+    else:
+        post.likes.add(request.user)
+
+    return redirect('post_detail', pk=pk)
