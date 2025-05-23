@@ -26,14 +26,24 @@
             top: 0;
             width: 220px;
         }
-
-        .sidebar a {
+        .sidebar button{
+                   background: none;
+	color: inherit;
+	border: none;
+	padding: 0;
+	font: inherit;
+	cursor: pointer;
+	outline: inherit;
+                }
+        .sidebar a, button{
+            text-align: center;
             color: #ccc;
             text-decoration: none;
-            display: block;
             padding: 0.5rem 0;
             border-radius: 4px;
             transition: background-color 0.3s ease, color 0.3s ease;
+            display: inline-block ;
+            width: 100%;
         }
 
         .sidebar a:hover {
@@ -100,7 +110,20 @@
 <body>
     <!-- Sidebar -->
     <div class="sidebar">
+        {% if user.is_authenticated %}
+        <h4 class="menu-title" >{{ user.username }}</h4>
+        {% else %}
         <h4 class="menu-title" >منو</h4>
+        {% endif %}
+        {% if user.is_authenticated %}
+        <form action="{% url 'logout' %}" method="post">
+            {% csrf_token %}
+            <button type="submit"><a>خروج</a></button>
+        </form>
+          {% else %}
+            <a href="{% url 'login' %}">ورود</a>
+            <a href="{% url 'signup' %}">ثبت نام</a>
+          {% endif %}
         <a href="{% url 'home' %}" class="{% if request.path == '/' %}active{% endif %}">صفحه اصلی</a>
         <a href="{% url 'about' %}" class="{% if request.path == '/about/' %}active{% endif %}">درباره ما</a>
         <a href="{% url 'posts' %}" class="{% if request.path == '/posts/' %}active{% endif %}">مطالب</a>
