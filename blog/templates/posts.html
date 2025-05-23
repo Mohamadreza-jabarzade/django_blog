@@ -8,8 +8,15 @@
 {% for post in posts %}
     <div class="card mb-3">
         <div class="card-body">
-            <h5 class="card-title"><a href="{% url   'post_detail' post.pk %}">{{ post.title }}</a></h5>
-            <p class="card-text">{{ post.content }}</p>
+            {% if post.image %}
+  <div class="text-center my-4">
+  <img src="{{ post.image.url }}"
+       alt="{{ post.title }}"
+       class="img-fluid rounded w-25">
+</div>
+{% endif %}
+            <h5 class="card-title"><a class="myA text-primary text-decoration-none fw-semibold" href="{% url   'post_detail' post.pk %}">{{ post.title }}</a></h5>
+            <p class="card-text">{{ post.content|truncatewords:50 }}</p>
         </div>
     </div>
 {% empty %}

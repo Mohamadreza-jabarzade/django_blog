@@ -13,7 +13,7 @@ def about(request):
 
 def posts(request):
     # اگر دوتا صفحه متفاوت می‌خوای می‌تونی تغییر بدی
-    posts = Post.objects.all()
+    posts = Post.objects.all().order_by('-created_at')
     return render(request, 'posts.html', {'posts': posts})
 
 def contact(request):
