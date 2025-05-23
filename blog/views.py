@@ -6,7 +6,8 @@ from .forms import SignUpForm
 from blog.models import Post
 from django.contrib import messages
 from django.shortcuts import render
-from .models import Post  # فرض بر اینکه مدل Post داری
+from .models import Post
+from .forms import CommentForm
 
 def home(request):
     top_posts = Post.objects.order_by('created_at')[:3]  # یا هر شرط دلخواه
@@ -23,7 +24,27 @@ def contact(request):
 
 def post_detail(request, pk):
     post = get_object_or_404(Post, pk=pk)
-    return render(request, 'post_detail.html', {'post': post})
+    comments = post.comments.all().order_by('-created_at')
+
+    if request.method == 'POST':
+        if request.user.is_authenticated:
+            form = CommentForm(request.POST)
+            if form.is_valid():
+                comment = form.save(commit=False)
+                comment.author = request.user
+                comment.post = post
+                comment.save()
+                return redirect('post_detail', pk=post.pk)
+        else:
+            return redirect('login')
+    else:
+        form = CommentForm()
+
+    return render(request, 'post_detail.html', {
+        'post': post,
+        'comments': comments,
+        'form': form
+    })
 
 def signup_view(request):
     if request.method == 'POST':

@@ -23,4 +23,26 @@
 </div>
 
 <a href="{% url 'posts' %}" class="btn btn-primary mt-4">بازگشت به مطالب</a>
+<h5 class="mt-5">نظرات</h5>
+{% if comments %}
+    {% for comment in comments %}
+        <div class="border p-2 mb-2 rounded">
+           <strong> {{ comment.created_at|to_shamsi }} - {{ comment.author }} </strong>
+
+            <p>{{ comment.content }}</p>
+        </div>
+    {% endfor %}
+{% else %}
+    <p>هیچ نظری ثبت نشده است.</p>
+{% endif %}
+
+{% if user.is_authenticated %}
+    <form method="post" class="mt-4">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-primary">ارسال نظر</button>
+    </form>
+{% else %}
+    <p class="text-danger mt-4">برای ثبت نظر باید <a href="{% url 'login' %}">وارد شوید</a>.</p>
+{% endif %}
 {% endblock %}
