@@ -15,17 +15,11 @@
     <div class="card-body">
         <h2 class="card-title mb-3">{{ post.title }}</h2>
         {% if user.is_authenticated %}
-            <form action="{% url 'like_post' post.pk %}" method="post">
-                {% csrf_token %}
-                {% if user in post.likes.all %}
-                    <button type="submit" class="btn btn-danger btn-sm">❤️ لغو لایک</button>
-                {% else %}
-                    <button type="submit" class="btn btn-outline-danger btn-sm">🤍 لایک</button>
-                {% endif %}
-                <span class="ms-2 text-muted small">تعداد لایک‌ها: {{ post.total_likes }}</span>
-            </form>
+            <button class=" w-25 btn btn-sm btn-outline-primary like-btn" data-post-id="{{ post.id }}">
+            👍 <span class="like-count">{{ post.total_likes }}</span>
+</button>
         {% else %}
-            <button type="button" onclick="loginMessage()" class="btn btn-outline-danger btn-sm">🤍 لایک</button>
+            <button type="button" onclick="loginMessage()" class="w-25 btn btn-outline-danger btn-sm">🤍 لایک</button>
             <span class="ms-2 text-muted small">تعداد لایک‌ها: {{ post.total_likes }}</span>
         {% endif %}
 
@@ -66,5 +60,38 @@
     function loginMessage(){
         alert("ابتدا باید وارد شوید")
     }
+
+document.addEventListener("DOMContentLoaded", function () {
+    const likeButtons = document.querySelectorAll('.like-btn');
+
+    likeButtons.forEach(button => {
+        button.addEventListener('click', function () {
+            const postId = this.dataset.postId;
+            const url = `/like/${postId}/`;
+
+            fetch(url, {
+                method: 'GET',
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest',
+                },
+            })
+            .then(response => response.json())
+            .then(data => {
+                const countSpan = this.querySelector('.like-count');
+                countSpan.textContent = data.total_likes;
+
+                if (data.liked) {
+                    this.classList.add('btn-success');
+                    this.classList.remove('btn-outline-primary');
+                } else {
+                    this.classList.remove('btn-success');
+                    this.classList.add('btn-outline-primary');
+                }
+            });
+        });
+    });
+});
+
+
 </script>
 {% endblock %}

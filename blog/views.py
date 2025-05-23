@@ -1,5 +1,6 @@
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import UserCreationForm
+from django.http import JsonResponse
 from django.shortcuts import render, get_object_or_404
 from django.shortcuts import render, redirect
 from django.contrib.auth import login, authenticate
@@ -63,11 +64,16 @@ def signup_view(request):
 
 @login_required
 def like_post(request, pk):
-    post = get_object_or_404(Post, pk=pk)
+    post = Post.objects.get(pk=pk)
 
     if request.user in post.likes.all():
         post.likes.remove(request.user)
+        liked = False
     else:
         post.likes.add(request.user)
+        liked = True
 
-    return redirect('post_detail', pk=pk)
+    return JsonResponse({
+        'liked': liked,
+        'total_likes': post.total_likes()
+    })
