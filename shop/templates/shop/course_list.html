@@ -1,0 +1,21 @@
+{% extends 'shop/shop_base.html' %}
+{% block title %}لیست دوره‌ها{% endblock %}
+{% block content %}
+<h2 class="text-center mb-5 mt-5" >دوره‌های آموزشی</h2>
+<div dir="rtl" class="row">
+    {% for course in courses %}
+    <div dir="rtl" class="col-md-4 d-flex align-items-stretch">
+        <div dir="rtl" class="card mb-3 w-100 d-flex flex-column">
+            <div class="ratio ratio-16x9">
+                <video src="{{ course.video.url }}" class="card-img-top" alt="{{ course.title }}" controls></video>
+            </div>
+            <div dir="rtl" class="card-body d-flex flex-column">
+                <h5 class="card-title text-truncate text-right">{{ course.title }}</h5>
+                <p class="card-text text-right overflow-auto flex-grow-1" style="max-height: 4.5em;">{{ course.description|truncatewords:20 }}</p>
+                <a href="{% url 'shop:course_detail' course.pk %}" class="btn btn-success mt-auto">مشاهده و خرید</a>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}

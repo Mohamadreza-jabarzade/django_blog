@@ -1,0 +1,21 @@
+{% extends 'shop/shop_base.html' %}
+{% block title %}{{ course.title }}{% endblock %}
+{% block content %}
+<div class="card">
+    <div class="ratio ratio-16x9">
+                <video src="{{ course.video.url }}" class="card-img-top" alt="{{ course.title }}" controls></video>
+            </div>
+    <div class="card-body">
+        <h3 class="text-right card-title">{{ course.title }}</h3>
+        <p class="text-right card-text">{{ course.description }}</p>
+        <p class="text-center"><strong>قیمت:</strong> {{ course.price }} تومان</p>
+        <form method="post" action="{% url 'shop:add_to_cart' course.pk %}">
+            {% csrf_token %}
+            <div class="text-center mb-4" >
+                <button type="submit" class="text-center btn btn-success">افزودن به سبد خرید</button>
+            </div>
+        </form>
+
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,28 @@
+{% extends 'shop/shop_base.html' %}
+{% block title %}سبد خرید{% endblock %}
+{% block content %}
+<h2 class="text-center">سبد خرید</h2>
+{% if cart_items %}
+<ul dir="rtl" class="list-group">
+    {% for item in cart_items %}
+    <li class="list-group-item d-flex justify-content-between align-items-center">
+        <div>
+            {{ item.course.title }} - {{ item.course.price }} تومان
+            <span class="badge bg-primary ms-2">{{ item.quantity }}</span>
+        </div>
+        <form action="{% url 'shop:remove_from_cart' item.course.id %}" method="post">
+            {% csrf_token %}
+            <button class="btn btn-danger btn-sm">حذف</button>
+        </form>
+    </li>
+    {% endfor %}
+</ul>
+<p class="text-center mt-3"><strong>مجموع:</strong> {{ total }} تومان</p>
+<div class="text-center mt-3">
+    <a href="#" class="btn btn-primary">پرداخت</a>
+</div>
+
+{% else %}
+<p>سبد خرید شما خالی است.</p>
+{% endif %}
+{% endblock %}
