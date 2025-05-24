@@ -28,6 +28,14 @@
             {{ post.content|linebreaks }}
         </div>
         <p class="text-muted small">نویسنده : {{ post.author }}</p>
+
+        <div class="text-center">
+            {% if post.course %}
+                <a href="{% url 'shop:course_detail' post.course.pk %}" class="btn btn-outline-primary mt-3">
+                    مشاهده آموزش مرتبط در فروشگاه 🎓
+                </a>
+            {% endif %}
+        </div>
     </div>
 </div>
 

@@ -9,6 +9,7 @@ class Post(models.Model):
     created_at = models.DateTimeField(default=timezone.now)
     author = models.CharField(max_length=100,default='Mohamadreza')
     likes = models.ManyToManyField(User, related_name='liked_posts', blank=True)
+    course = models.ForeignKey('shop.Course', on_delete=models.CASCADE, null=True, blank=True)
 
     def total_likes(self):
         return self.likes.count()

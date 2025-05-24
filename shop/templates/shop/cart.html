@@ -19,7 +19,7 @@
 </ul>
 <p class="text-center mt-3"><strong>مجموع:</strong> {{ total }} تومان</p>
 <div class="text-center mt-3">
-    <a href="#" class="btn btn-primary">پرداخت</a>
+    <a href="{% url 'payment:checkout' %}" class="btn btn-primary">پرداخت</a>
 </div>
 
 {% else %}
