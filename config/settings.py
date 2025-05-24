@@ -29,6 +29,7 @@ INSTALLED_APPS = [
     'blog',
     'shop',
     'payment',
+    'jalali_date',
 ]
 
 MIDDLEWARE = [
