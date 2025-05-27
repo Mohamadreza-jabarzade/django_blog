@@ -4,7 +4,7 @@ from django.http import JsonResponse
 from django.shortcuts import render, get_object_or_404
 from django.shortcuts import render, redirect
 from django.contrib.auth import login, authenticate
-from .forms import SignUpForm
+from .forms import SignUpForm, ContactForm
 from blog.models import Post
 from django.contrib import messages
 from django.shortcuts import render
@@ -21,8 +21,6 @@ def posts(request):
     posts = Post.objects.all().order_by('-created_at')
     return render(request, 'posts.html', {'posts': posts})
 
-def contact(request):
-    return render(request, 'contact.html')
 
 def post_detail(request, pk):
     post = get_object_or_404(Post, pk=pk)
@@ -77,3 +75,14 @@ def like_post(request, pk):
         'liked': liked,
         'total_likes': post.total_likes()
     })
+
+def contact_view(request):
+    if request.method == 'POST':
+        form = ContactForm(request.POST)
+        if form.is_valid():
+            form.save()  # این خط داده‌ها رو در دیتابیس ذخیره می‌کنه ✅
+            messages.success(request, "پیام شما با موفقیت ارسال شد.")
+            return redirect('contact')
+    else:
+        form = ContactForm()
+    return render(request, 'contact.html', {'form': form})
